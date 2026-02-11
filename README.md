@@ -4,7 +4,7 @@ A live demo for PyData showing how Apache Hudi with the Lance file format enable
 
 ## What This Demo Shows
 
-We load 853 real job postings from [HuggingFace](https://huggingface.co/datasets/jacob-hugging-face/job-descriptions) into a single Hudi table — structured fields (company, title, description length) **and** vector embeddings side by side. Then we query it three different ways.
+We load ~3k real data science job postings from [HuggingFace](https://huggingface.co/datasets/nathansutton/data-science-job-descriptions) into a single Hudi table — structured fields (company, title) **and** vector embeddings side by side. Then we query it three different ways.
 
 ### 1. Resume Upload (Vector Search)
 
@@ -12,11 +12,11 @@ A user uploads a technical Python/ML resume. It never says "Senior Data Scientis
 
 ### 2. Business Constraints (Hybrid Search)
 
-The user says: *"I specifically want to work at Google."* We combine the same vector search with a standard SQL `WHERE company_name = 'Google'` clause against the same Hudi table. Vector + SQL filters in one query. This is hybrid search.
+The user says: *"I specifically want to work at Reddit."* We combine the same vector search with a standard SQL `WHERE company = 'Reddit'` clause against the same Hudi table. Vector + SQL filters in one query. This is hybrid search.
 
 ### 3. Executive Dashboard (Analytics)
 
-Now we switch hats. We're an analyst on the job platform team. We don't care about individual matches — we care about hiring activity across companies and how detailed their postings are. We query the **exact same dataset** to build charts. No ETL to a separate warehouse.
+Now we switch hats. We're an analyst on the job platform team. We don't care about individual matches — we care about which companies are hiring the most and what roles dominate the market. We query the **exact same dataset** to build charts. No ETL to a separate warehouse.
 
 ## Setup
 
