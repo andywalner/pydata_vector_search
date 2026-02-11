@@ -4,7 +4,7 @@ A live demo for PyData showing how Apache Hudi with the Lance file format enable
 
 ## What This Demo Shows
 
-We build an intelligent job-matching platform. One Hudi table stores structured data (salary, location, department) **and** vector embeddings side by side. Then we query it three different ways.
+We load 853 real job postings from [HuggingFace](https://huggingface.co/datasets/jacob-hugging-face/job-descriptions) into a single Hudi table — structured fields (company, title, description length) **and** vector embeddings side by side. Then we query it three different ways.
 
 ### 1. Resume Upload (Vector Search)
 
@@ -12,11 +12,11 @@ A user uploads a technical Python/ML resume. It never says "Senior Data Scientis
 
 ### 2. Business Constraints (Hybrid Search)
 
-The user says: *"I can't relocate, and I need at least $150k."* We combine the same vector search with standard SQL `WHERE` clauses — `location = 'Remote' AND salary > 150000` — against the same Hudi table. Vector + SQL filters in one query. This is hybrid search.
+The user says: *"I specifically want to work at Google."* We combine the same vector search with a standard SQL `WHERE company_name = 'Google'` clause against the same Hudi table. Vector + SQL filters in one query. This is hybrid search.
 
 ### 3. Executive Dashboard (Analytics)
 
-Now we switch hats. We're an analyst on the job platform team. We don't care about individual matches — we care about hiring velocity and salary bands across departments. We query the **exact same dataset** to build time-series and compensation charts. No ETL to a separate warehouse.
+Now we switch hats. We're an analyst on the job platform team. We don't care about individual matches — we care about hiring activity across companies and how detailed their postings are. We query the **exact same dataset** to build charts. No ETL to a separate warehouse.
 
 ## Setup
 
@@ -39,7 +39,7 @@ hudi-spark-datasource/hudi-spark3.5-bundle/target/hudi-spark3.5-bundle_2.12-*.ja
 ### 2. Python dependencies
 
 ```bash
-pip install pyspark pandas matplotlib sentence-transformers
+pip install pyspark pandas matplotlib sentence-transformers datasets
 ```
 
 ### 3. Launch
@@ -61,6 +61,5 @@ jupyter notebook demo.ipynb
 ## Repo Structure
 
 ```
-demo.py          # Standalone script
-demo.ipynb       # Jupyter notebook (same content, cell-by-cell)
+demo.ipynb       # Jupyter notebook
 ```
