@@ -1,1 +1,11 @@
+# Built dependencies (large, not tracked)
+hudi-vector-search/
+*.jar
+
+# Local environment config
+.env
+
+# Spark / Hudi runtime
+*.pyc
+__pycache__/
 .ipynb_checkpoints/

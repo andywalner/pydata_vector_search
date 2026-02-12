@@ -45,19 +45,15 @@ Now we switch hats. We're an analyst on the job platform team. We don't care abo
 
 ### 1. Build Hudi with Lance + Vector Search support
 
-This demo runs on a feature branch that adds Lance file format and vector search to Hudi.
+Clone and build inside this repo (the `hudi-vector-search/` directory is gitignored):
 
 ```bash
-git clone https://github.com/rahil-c/hudi.git
-cd hudi
+git clone https://github.com/rahil-c/hudi.git hudi-vector-search
+cd hudi-vector-search
 git checkout rahil/rfc100-hudi-vector-search
 mvn clean package -DskipTests -Dscalastyle.skip=true -Dcheckstyle.skip=true \
     -pl packaging/hudi-spark-bundle -am
-```
-
-The built JAR will be at:
-```
-packaging/hudi-spark-bundle/target/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar
+cd ..
 ```
 
 ### 2. Python dependencies
@@ -66,24 +62,35 @@ packaging/hudi-spark-bundle/target/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar
 pip install -r requirements.txt
 ```
 
-### 3. Launch
+### 3. Configure environment
 
-Both JARs must be on the classpath. Set `PYSPARK_SUBMIT_ARGS` and start Jupyter:
+Copy the example env file and adjust paths for your system:
 
 ```bash
-export PYSPARK_SUBMIT_ARGS="--jars /path/to/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar,/path/to/lance-spark-bundle-3.5_2.12-0.0.14.jar pyspark-shell"
+cp .env.example .env
+# Edit .env — set JAVA_HOME and SPARK_HOME for your machine
+```
+
+### 4. Launch
+
+```bash
+source .env
 jupyter notebook demo.ipynb
 ```
 
 Or launch PySpark directly:
 
 ```bash
-pyspark --jars /path/to/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar,/path/to/lance-spark-bundle-3.5_2.12-0.0.14.jar
+source .env
+pyspark
 ```
 
 ## Repo Structure
 
 ```
-demo.ipynb         # Jupyter notebook (the full demo)
-requirements.txt   # Python dependencies
+demo.ipynb                  # Jupyter notebook (the full demo)
+requirements.txt            # Python dependencies
+.env.example                # Environment config template
+hudi-vector-search/         # Hudi build (gitignored)
+lance-spark-bundle-*.jar    # Lance runtime (gitignored)
 ```
