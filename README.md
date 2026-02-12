@@ -39,7 +39,7 @@ hudi-spark-datasource/hudi-spark3.5-bundle/target/hudi-spark3.5-bundle_2.12-*.ja
 ### 2. Python dependencies
 
 ```bash
-pip install pyspark pandas matplotlib sentence-transformers datasets
+pip install -r requirements.txt
 ```
 
 ### 3. Launch
@@ -61,5 +61,6 @@ jupyter notebook demo.ipynb
 ## Repo Structure
 
 ```
-demo.ipynb       # Jupyter notebook
+demo.ipynb         # Jupyter notebook
+requirements.txt   # Python dependencies
 ```
