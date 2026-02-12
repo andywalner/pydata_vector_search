@@ -18,6 +18,29 @@ The user says: *"I specifically want to work at Reddit."* We combine the same ve
 
 Now we switch hats. We're an analyst on the job platform team. We don't care about individual matches — we care about which companies are hiring the most and what roles dominate the market. We query the **exact same dataset** to build charts. No ETL to a separate warehouse.
 
+## Prerequisites
+
+- **Java 17** — required by the Hudi vector search branch
+  ```bash
+  # macOS
+  brew install openjdk@17
+  export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
+  ```
+
+- **Apache Spark 3.5.x** — download the [pre-built package](https://spark.apache.org/downloads.html) (Hadoop 3, Scala 2.12)
+  ```bash
+  export SPARK_HOME=/path/to/spark-3.5.3-bin-hadoop3
+  export PATH=$SPARK_HOME/bin:$PATH
+  ```
+
+- **Maven** — for building Hudi from source
+
+- **Lance Spark bundle** — the Lance file format runtime, distributed separately. **Use the Scala 2.12 variant** (not 2.13) to match Spark 3.5.x.
+  ```bash
+  curl -L -o lance-spark-bundle-3.5_2.12-0.0.14.jar \
+    "https://repo1.maven.org/maven2/com/lancedb/lance-spark-bundle-3.5_2.12/0.0.14/lance-spark-bundle-3.5_2.12-0.0.14.jar"
+  ```
+
 ## Setup
 
 ### 1. Build Hudi with Lance + Vector Search support
@@ -28,12 +51,13 @@ This demo runs on a feature branch that adds Lance file format and vector search
 git clone https://github.com/rahil-c/hudi.git
 cd hudi
 git checkout rahil/rfc100-hudi-vector-search
-mvn clean package -DskipTests -pl hudi-spark-datasource/hudi-spark3.5-bundle -am
+mvn clean package -DskipTests -Dscalastyle.skip=true -Dcheckstyle.skip=true \
+    -pl packaging/hudi-spark-bundle -am
 ```
 
 The built JAR will be at:
 ```
-hudi-spark-datasource/hudi-spark3.5-bundle/target/hudi-spark3.5-bundle_2.12-*.jar
+packaging/hudi-spark-bundle/target/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar
 ```
 
 ### 2. Python dependencies
@@ -44,23 +68,22 @@ pip install -r requirements.txt
 
 ### 3. Launch
 
-Start Spark with the Hudi bundle JAR:
+Both JARs must be on the classpath. Set `PYSPARK_SUBMIT_ARGS` and start Jupyter:
 
 ```bash
-pyspark --jars /path/to/hudi-spark3.5-bundle_2.12-*.jar
-```
-
-Or run the notebook:
-
-```bash
+export PYSPARK_SUBMIT_ARGS="--jars /path/to/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar,/path/to/lance-spark-bundle-3.5_2.12-0.0.14.jar pyspark-shell"
 jupyter notebook demo.ipynb
 ```
 
-(Make sure `PYSPARK_SUBMIT_ARGS` includes `--jars /path/to/hudi-spark3.5-bundle_2.12-*.jar` or configure it in the notebook's Spark session.)
+Or launch PySpark directly:
+
+```bash
+pyspark --jars /path/to/hudi-spark3.5-bundle_2.12-1.2.0-SNAPSHOT.jar,/path/to/lance-spark-bundle-3.5_2.12-0.0.14.jar
+```
 
 ## Repo Structure
 
 ```
-demo.ipynb         # Jupyter notebook
+demo.ipynb         # Jupyter notebook (the full demo)
 requirements.txt   # Python dependencies
 ```
