@@ -2,6 +2,8 @@
 
 A live demo for PyData showing how Apache Hudi with the Lance file format enables **vector search**, **hybrid search**, and **analytics** on a single lakehouse table — no data copying, no separate vector database.
 
+**Enjoyed the demo or want to contribute? Check out [Apache Hudi](https://github.com/apache/hudi) and give a ⭐.**
+
 ## What This Demo Shows
 
 We load ~3k real data science job postings from [HuggingFace](https://huggingface.co/datasets/nathansutton/data-science-job-descriptions) into a single Hudi table — structured fields (company, title) **and** vector embeddings side by side. Then we query it three different ways.
